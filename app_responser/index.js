@@ -3,8 +3,8 @@ const app = express();
 const crypto = require('crypto');
 const yaml = require('js-yaml');
 const fs = require('fs');
-
-app.set('view engine', 'pug');
+const jwt = require("jsonwebtoken");
+const jwt_key = "2hH_DJHKD9";
 
 app.use(express.urlencoded(
 {
@@ -27,10 +27,8 @@ app.post('/v1/authorization', (req, res) =>
 
     if (account)
     {
-        const token = req.headers.cookie;
-        console.log(`token: ${token}`);
-        res.set('access-token', token);
-        res.redirect('/v1/cars');
+        const token = jwt.sign({ id: 1, role: "admin" }, jwt_key);
+        return res.status(200).send({'access_token': token});
     }
     else
     {
@@ -38,7 +36,7 @@ app.post('/v1/authorization', (req, res) =>
         {
             text: hash3,
         }
-        res.status(404);
+        return res.status(404).json(error);
     }
 })
 
@@ -61,16 +59,12 @@ app.get('/v1/cars', (req, res) =>
         description: null,
         brandName: 'BMW'
     }]
-    res.render('table',
-    {
-        cars: cars
-    });
-    res.status(200);
+    return res.status(200).send({'cars': cars});
 })
 
 app.use((req, res, next) =>
 {
-    res.status(404).json(
+    return res.status(404).json(
     {
         message: 'Страница не найдена :)'
     })

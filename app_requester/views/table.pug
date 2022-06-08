@@ -1,0 +1,23 @@
+html
+    head
+        title='Table'
+    body
+        center
+            table
+                thead
+                    tr
+                        th ID
+                        th Модель
+                        th Цена
+                        th Мощность
+                        th Описание
+                        th Бренд
+                tbody
+                    each car in cars
+                        tr
+                            td #{car.id}
+                            td #{car.model}
+                            td #{car.price}
+                            td #{car.power}
+                            td #{car.description}
+                            td #{car.brandName}
