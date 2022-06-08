@@ -20,10 +20,10 @@ app.get('/', (req, res) =>
 
 app.post('/v1/authorization', (req, res) =>
 {
-    const hash2 = crypto.createHash('sha1').update(req.body.password).digest('hex');
+    const hash3 = crypto.createHash('sha1').update(req.body.password).digest('hex');
     const accounts = yaml.load(fs.readFileSync(__dirname + '/accounts.yaml'), 'utf-8').accounts;
     const login = req.body.login
-    const account = accounts.find(x => x.login === login && x.password.toUpperCase() === hash2.toUpperCase())
+    const account = accounts.find(x => x.login === login && x.password.toUpperCase() === hash3.toUpperCase())
 
     if (account)
     {
@@ -36,7 +36,7 @@ app.post('/v1/authorization', (req, res) =>
     {
         const error =
         {
-            text: hash2,
+            text: hash3,
         }
         res.status(404).json(error);
     }
